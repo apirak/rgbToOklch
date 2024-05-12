@@ -17,6 +17,12 @@ export type sRGBLinearColor = {
   b: number;
 };
 
+export type XYZColor = {
+  x: number;
+  y: number;
+  z: number;
+};
+
 // const rgb2srgbLinear = (rgb: Vector3): Vector3 =>
 //   rgb.map((c) =>
 //     Math.abs(c) <= 0.04045
@@ -47,19 +53,47 @@ export function rgb2srgbLinear(rgb: RGBColor): sRGBLinearColor {
   };
 }
 
-const multiplyMatrices = (A: number[], B: Vector3): Vector3 => {
-  return [
-    A[0] * B[0] + A[1] * B[1] + A[2] * B[2],
-    A[3] * B[0] + A[4] * B[1] + A[5] * B[2],
-    A[6] * B[0] + A[7] * B[1] + A[8] * B[2],
-  ];
-};
+// const multiplyMatrices = (A: number[], B: Vector3): Vector3 => {
+//   return [
+//     A[0] * B[0] + A[1] * B[1] + A[2] * B[2],
+//     A[3] * B[0] + A[4] * B[1] + A[5] * B[2],
+//     A[6] * B[0] + A[7] * B[1] + A[8] * B[2],
+//   ];
+// };
 
-const oklch2oklab = ([l, c, h]: Vector3): Vector3 => [
-  l,
-  isNaN(h) ? 0 : c * Math.cos((h * Math.PI) / 180),
-  isNaN(h) ? 0 : c * Math.sin((h * Math.PI) / 180),
-];
+// const rgbLinear2xyz = (rgb: Vector3): Vector3 => {
+//   return multiplyMatrices(
+//     [
+//       0.41239079926595934, 0.357584339383878, 0.1804807884018343,
+//       0.21263900587151027, 0.715168678767756, 0.07219231536073371,
+//       0.01933081871559182, 0.11919477979462598, 0.9505321522496607,
+//     ],
+//     rgb
+//   );
+// };
+
+export function rgbLinear2xyz(rgbLinear: sRGBLinearColor): XYZColor {
+  const matrix = [
+    [0.41239079926595934, 0.357584339383878, 0.1804807884018343],
+    [0.21263900587151027, 0.715168678767756, 0.07219231536073371],
+    [0.01933081871559182, 0.11919477979462598, 0.9505321522496607],
+  ];
+
+  let x =
+    rgbLinear.r * matrix[0][0] +
+    rgbLinear.g * matrix[0][1] +
+    rgbLinear.b * matrix[0][2];
+  let y =
+    rgbLinear.r * matrix[1][0] +
+    rgbLinear.g * matrix[1][1] +
+    rgbLinear.b * matrix[1][2];
+  let z =
+    rgbLinear.r * matrix[2][0] +
+    rgbLinear.g * matrix[2][1] +
+    rgbLinear.b * matrix[2][2];
+
+  return { x, y, z };
+}
 
 const oklab2oklch = ([l, a, b]: Vector3): Vector3 => [
   l,
@@ -86,17 +120,6 @@ const xyz2oklab = (xyz: Vector3): Vector3 => {
       0.0259040424655478, 0.7827717124575296, -0.8086757549230774,
     ],
     LMSg
-  );
-};
-
-const rgbLinear2xyz = (rgb: Vector3): Vector3 => {
-  return multiplyMatrices(
-    [
-      0.41239079926595934, 0.357584339383878, 0.1804807884018343,
-      0.21263900587151027, 0.715168678767756, 0.07219231536073371,
-      0.01933081871559182, 0.11919477979462598, 0.9505321522496607,
-    ],
-    rgb
   );
 };
 

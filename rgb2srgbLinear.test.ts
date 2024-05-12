@@ -35,7 +35,6 @@ describe('convert RGB to OKLCH', () => {
 
   it('convert rgba(194, 150, 71)', () => {
     const rgb = { r: 194 / 255, g: 150 / 255, b: 71 / 255 }; // Specific color
-    // const rgb = { r: 194, g: 150, b: 71 }; // Specific color
     const result: sRGBLinearColor = rgb2srgbLinear(rgb);
     expect(result.r).toBeCloseTo(0.539479, 4);
     expect(result.g).toBeCloseTo(0.304987, 4);
