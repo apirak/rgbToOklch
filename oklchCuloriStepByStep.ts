@@ -1,4 +1,7 @@
-type Vector3 = [number, number, number];
+import { converter } from 'culori';
+
+export type Vector3 = [number, number, number];
+
 export type RGB = {
   r: number;
   g: number;
@@ -35,46 +38,18 @@ type OklchColor = {
   h: number;
 };
 
-// const rgb2srgbLinear = (rgb: Vector3): Vector3 =>
-//   rgb.map((c) =>
-//     Math.abs(c) <= 0.04045
-//       ? c / 12.92
-//       : Math.sign(c) * ((Math.abs(c) + 0.055) / 1.055) ** 2.4
-//   ) as Vector3;
-
-// const rgb2srgbLinear = (rgb: Vector3): Vector3 =>
-//   rgb.map((c) =>
-//     Math.abs(c) <= 0.04045
-//       ? c / 12.92
-//       : (c < 0 ? -1 : 1) * ((Math.abs(c) + 0.055) / 1.055) ** 2.4
-//   ) as Vector3;
-
 export function rgb2srgbLinear(rgb: RGBColor): sRGBLinearColor {
-  const linearize = (channel: number): number => {
-    if (channel <= 0.04045) {
-      return channel / 12.92;
-    } else {
-      return ((channel + 0.055) / 1.055) ** 2.4;
-    }
+  let linear = converter('lrgb');
+  let color255 = {
+    r: rgb.r,
+    g: rgb.g,
+    b: rgb.b,
   };
+  let linearColor = linear(`rgb(${color255.r}, ${color255.g}, ${color255.b})`);
+  console.log('linearColor', linearColor);
 
-  return {
-    r: linearize(rgb.r),
-    g: linearize(rgb.g),
-    b: linearize(rgb.b),
-  };
+  return linearColor;
 }
-
-// const rgbLinear2xyz = (rgb: Vector3): Vector3 => {
-//   return multiplyMatrices(
-//     [
-//       0.41239079926595934, 0.357584339383878, 0.1804807884018343,
-//       0.21263900587151027, 0.715168678767756, 0.07219231536073371,
-//       0.01933081871559182, 0.11919477979462598, 0.9505321522496607,
-//     ],
-//     rgb
-//   );
-// };
 
 export function rgbLinear2xyz(rgbLinear: sRGBLinearColor): XYZColor {
   const matrix = [

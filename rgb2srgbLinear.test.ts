@@ -1,6 +1,6 @@
 import { rgb2srgbLinear, RGBColor, sRGBLinearColor } from './oklch';
 
-describe('convert RGB to OKLCH', () => {
+describe('Test rgb2srgbLinear', () => {
   it('convert red color', () => {
     const rgb = { r: 255 / 255, g: 0, b: 0 }; // Red color
     const result: sRGBLinearColor = rgb2srgbLinear(rgb);

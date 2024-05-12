@@ -1,6 +1,6 @@
 import { rgbLinear2xyz, sRGBLinearColor, XYZColor } from './oklch';
 
-describe('convert RGB to OKLCH', () => {
+describe('Test rgbLinear2xyz', () => {
   // Existing tests for rgb2srgbLinear...
 
   it('convert sRGB linear red color to XYZ', () => {
@@ -43,7 +43,7 @@ describe('convert RGB to OKLCH', () => {
     expect(result.z).toBeCloseTo(0.35519246518651441576774, 4);
   });
 
-  it('convert specific sRGB linear color to XYZ', () => {
+  it('convert sRGB linear rgba(194, 150, 71) to XYZ', () => {
     const rgbLinear: sRGBLinearColor = { r: 0.539479, g: 0.304987, b: 0.06301 }; // RGB (194, 150, 71) converted to sRGB Linear
     const result: XYZColor = rgbLinear2xyz(rgbLinear);
     expect(result.x).toBeCloseTo(0.34290684539007085761286, 4); // Calculated from the matrix multiplication
