@@ -15,5 +15,8 @@
   },
   "scripts": {
     "test": "jest --watch"
+  },
+  "dependencies": {
+    "culori": "^4.0.1"
   }
 }
