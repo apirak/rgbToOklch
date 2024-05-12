@@ -46,7 +46,7 @@ export function rgb2srgbLinear(rgb: RGBColor): sRGBLinearColor {
     b: rgb.b,
   };
   let linearColor = linear(`rgb(${color255.r}, ${color255.g}, ${color255.b})`);
-  console.log('linearColor', linearColor);
+  // console.log('linearColor', linearColor);
 
   return linearColor;
 }
@@ -168,7 +168,7 @@ export function colorToOKLCH(color: RGB, opacity: number = 1): string {
     b: color.b * 255,
   };
   let oklchColor = rgb2oklch({ r: color255.r, g: color255.g, b: color255.b });
-  console.log('oklch', oklchColor);
+  // console.log('oklch', oklchColor);
 
   if (oklchColor) {
     let cl = formatNumber(oklchColor.l * 100, 1);

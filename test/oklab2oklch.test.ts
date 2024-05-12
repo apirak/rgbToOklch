@@ -1,4 +1,4 @@
-import { oklab2oklch } from './oklch';
+import { oklab2oklch } from '../oklch';
 
 describe('Oklab to OKLCH conversion', () => {
   it('converts Oklab to OKLCH correctly', () => {

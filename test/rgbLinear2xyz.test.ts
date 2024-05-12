@@ -1,4 +1,4 @@
-import { rgbLinear2xyz, sRGBLinearColor, XYZColor } from './oklch';
+import { rgbLinear2xyz, sRGBLinearColor, XYZColor } from '../oklch';
 
 describe('Test rgbLinear2xyz', () => {
   // Existing tests for rgb2srgbLinear...

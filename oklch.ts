@@ -35,26 +35,13 @@ type OklchColor = {
   h: number;
 };
 
-// const rgb2srgbLinear = (rgb: Vector3): Vector3 =>
-//   rgb.map((c) =>
-//     Math.abs(c) <= 0.04045
-//       ? c / 12.92
-//       : Math.sign(c) * ((Math.abs(c) + 0.055) / 1.055) ** 2.4
-//   ) as Vector3;
-
-// const rgb2srgbLinear = (rgb: Vector3): Vector3 =>
-//   rgb.map((c) =>
-//     Math.abs(c) <= 0.04045
-//       ? c / 12.92
-//       : (c < 0 ? -1 : 1) * ((Math.abs(c) + 0.055) / 1.055) ** 2.4
-//   ) as Vector3;
-
 export function rgb2srgbLinear(rgb: RGBColor): sRGBLinearColor {
   const linearize = (channel: number): number => {
+    channel /= 255;
     if (channel <= 0.04045) {
       return channel / 12.92;
     } else {
-      return ((channel + 0.055) / 1.055) ** 2.4;
+      return Math.pow((channel + 0.055) / 1.055, 2.4);
     }
   };
 
@@ -64,17 +51,6 @@ export function rgb2srgbLinear(rgb: RGBColor): sRGBLinearColor {
     b: linearize(rgb.b),
   };
 }
-
-// const rgbLinear2xyz = (rgb: Vector3): Vector3 => {
-//   return multiplyMatrices(
-//     [
-//       0.41239079926595934, 0.357584339383878, 0.1804807884018343,
-//       0.21263900587151027, 0.715168678767756, 0.07219231536073371,
-//       0.01933081871559182, 0.11919477979462598, 0.9505321522496607,
-//     ],
-//     rgb
-//   );
-// };
 
 export function rgbLinear2xyz(rgbLinear: sRGBLinearColor): XYZColor {
   const matrix = [
@@ -98,24 +74,6 @@ export function rgbLinear2xyz(rgbLinear: sRGBLinearColor): XYZColor {
 
   return { x, y, z };
 }
-
-// export function xyz2oklab_old(xyz: XYZColor): OklabColor {
-//   // Linear transformation from XYZ to LMS
-//   const l = 0.8189330101 * xyz.x + 0.3618667424 * xyz.y - 0.1288597137 * xyz.z;
-//   const m = 0.0329845436 * xyz.x + 0.9293118715 * xyz.y + 0.0361456387 * xyz.z;
-//   const s = 0.0482003018 * xyz.x + 0.2643662691 * xyz.y + 0.633851707 * xyz.z;
-
-//   // Apply the nonlinear function to convert LMS to lab
-//   const l_ = Math.cbrt(l);
-//   const m_ = Math.cbrt(m);
-//   const s_ = Math.cbrt(s);
-
-//   return {
-//     l: 0.2104542553 * l_ + 0.793617785 * m_ - 0.0040720468 * s_,
-//     a: 1.9779984951 * l_ - 2.428592205 * m_ + 0.4505937099 * s_,
-//     b: 0.0259040371 * l_ + 0.7827717662 * m_ - 0.808675766 * s_,
-//   };
-// }
 
 const multiplyMatrices = (A: number[], B: Vector3): Vector3 => {
   return [
@@ -186,14 +144,12 @@ const rgb2oklch = (rgb: RGB): OklchColor => {
 };
 
 export function colorToOKLCH(color: RGB, opacity: number = 1): string {
-  // let oklch = converter('oklch');
   let color255 = {
     r: color.r * 255,
     g: color.g * 255,
     b: color.b * 255,
   };
   let oklchColor = rgb2oklch({ r: color255.r, g: color255.g, b: color255.b });
-  console.log('oklch', oklchColor);
 
   if (oklchColor) {
     let cl = formatNumber(oklchColor.l * 100, 1);

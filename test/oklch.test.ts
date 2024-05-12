@@ -1,4 +1,4 @@
-import { colorToOKLCH, RGB } from './oklch';
+import { colorToOKLCH, RGB } from '../oklch';
 
 describe('convert RGB to OKLCH', () => {
   it('convert red color', () => {
