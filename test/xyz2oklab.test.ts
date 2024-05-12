@@ -1,5 +1,5 @@
-import { XYZColor } from './oklch';
-import { xyz2oklab as xyz2oklab } from './oklch';
+import { XYZColor } from '../oklch';
+import { xyz2oklab as xyz2oklab } from '../oklch';
 
 describe('Test xyz2oklab', () => {
   describe('XYZ to Oklab conversion', () => {
