@@ -1,39 +1,10 @@
 type Vector3 = [number, number, number];
-export type RGB = {
-  r: number;
-  g: number;
-  b: number;
-};
-
-export type RGBColor = {
-  r: number;
-  g: number;
-  b: number;
-};
-
-export type sRGBLinearColor = {
-  r: number;
-  g: number;
-  b: number;
-};
-
-export type XYZColor = {
-  x: number;
-  y: number;
-  z: number;
-};
-
-type OklabColor = {
-  l: number;
-  a: number;
-  b: number;
-};
-
-type OklchColor = {
-  l: number;
-  c: number;
-  h: number;
-};
+export type RGB = { r: number; g: number; b: number };
+export type RGBColor = { r: number; g: number; b: number };
+export type sRGBLinearColor = { r: number; g: number; b: number };
+export type XYZColor = { x: number; y: number; z: number };
+type OklabColor = { l: number; a: number; b: number };
+type OklchColor = { l: number; c: number; h: number };
 
 export function rgb2srgbLinear(rgb: RGBColor): sRGBLinearColor {
   const linearize = (channel: number): number => {
