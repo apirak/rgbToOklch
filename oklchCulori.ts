@@ -1,3 +1,5 @@
+// Convert RGB to OKLCH with Culori library
+
 import { converter } from 'culori';
 
 export type RGB = {

@@ -1,3 +1,5 @@
+// Convert RGB to OKLCH without any external library
+
 type Vector3 = [number, number, number];
 export type RGB = { r: number; g: number; b: number };
 export type RGBColor = { r: number; g: number; b: number };
@@ -99,9 +101,9 @@ function formatNumber(num: number, digits = 2): string {
   let num2 = truncateToTwoDecimals(num);
   // Check if the number is an integer
   if (num2 % 1 === 0) {
-    return num2.toString(); // Convert the whole number to a string
+    return num2.toString();
   } else {
-    return num.toFixed(digits); // Format the number to two decimal places and it's already a string
+    return num.toFixed(digits);
   }
 }
 
@@ -113,6 +115,8 @@ const rgb2oklch = (rgb: RGB): OklchColor => {
 
   return oklch;
 };
+
+// RGB is Normalized Format (0-1) using in Figma and particularly in graphics programming.
 
 export function colorToOKLCH(color: RGB, opacity: number = 1): string {
   let color255 = {
