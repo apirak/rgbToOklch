@@ -1,8 +1,8 @@
 # Lightweight RGB to OKLCH Color Converter 🎨
 
 Need to convert RGB colors to the OKLCH color space without the overhead of
-loading a full-fledged library like `culori` (41k) or `colorjs` Look no further!
-This tiny TypeScript code is here to save the day.
+loading a full-fledged library like `culori` (41k) or `colorjs` (159k) Look no
+further! This tiny TypeScript code is here to save the day.
 
 ## Getting Started
 
@@ -12,10 +12,11 @@ Now you can start converting colors with ease:
 import { colorToOKLCH, RGB } from 'rgbToOklch';
 
 const rgb: RGB = { r: 255 / 255, g: 0, b: 0 }; // Red color
+const opacity = 0.5;
 
-const result = colorToOKLCH(rgb, undefined);
+const result = colorToOKLCH(rgb, opacity);
 
-console.log(result); // oklch(62.8%, 0.258, 29.2)
+console.log(result); // oklch(62.8%, 0.258, 29.2 / 50%)
 ```
 
 A few notes:
