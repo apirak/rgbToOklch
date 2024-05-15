@@ -1,7 +1,6 @@
 // Convert RGB to OKLCH without any external library
 
 type Vector3 = [number, number, number];
-export type RGB = { r: number; g: number; b: number };
 export type RGBColor = { r: number; g: number; b: number };
 export type sRGBLinearColor = { r: number; g: number; b: number };
 export type XYZColor = { x: number; y: number; z: number };
@@ -48,33 +47,37 @@ export function rgbLinear2xyz(rgbLinear: sRGBLinearColor): XYZColor {
   return { x, y, z };
 }
 
-const multiplyMatrices = (A: number[], B: Vector3): Vector3 => {
+function multiplyMatrices(A: number[], B: Vector3): Vector3 {
+  const [a0, a1, a2, a3, a4, a5, a6, a7, a8] = A;
+  const [b0, b1, b2] = B;
   return [
-    A[0] * B[0] + A[1] * B[1] + A[2] * B[2],
-    A[3] * B[0] + A[4] * B[1] + A[5] * B[2],
-    A[6] * B[0] + A[7] * B[1] + A[8] * B[2],
+    a0 * b0 + a1 * b1 + a2 * b2,
+    a3 * b0 + a4 * b1 + a5 * b2,
+    a6 * b0 + a7 * b1 + a8 * b2,
   ];
-};
+}
 
 export const xyz2oklab = (xyz: XYZColor): OklabColor => {
   const vxyz: Vector3 = [xyz.x, xyz.y, xyz.z];
-  const LMS = multiplyMatrices(
-    [
-      0.819022437996703, 0.3619062600528904, -0.1288737815209879,
-      0.0329836539323885, 0.9292868615863434, 0.0361446663506424,
-      0.0481771893596242, 0.2642395317527308, 0.6335478284694309,
-    ],
-    vxyz
-  );
+
+  const lmsMatrix = [
+    0.819022437996703, 0.3619062600528904, -0.1288737815209879,
+    0.0329836539323885, 0.9292868615863434, 0.0361446663506424,
+    0.0481771893596242, 0.2642395317527308, 0.6335478284694309,
+  ];
+
+  const LMS = multiplyMatrices(lmsMatrix, vxyz);
+
   const LMSg = LMS.map((val) => Math.cbrt(val)) as Vector3;
-  const r = multiplyMatrices(
-    [
-      0.210454268309314, 0.7936177747023054, -0.0040720430116193,
-      1.9779985324311684, -2.4285922420485799, 0.450593709617411,
-      0.0259040424655478, 0.7827717124575296, -0.8086757549230774,
-    ],
-    LMSg
-  );
+
+  const oklabMatrix = [
+    0.210454268309314, 0.7936177747023054, -0.0040720430116193,
+    1.9779985324311684, -2.4285922420485799, 0.450593709617411,
+    0.0259040424655478, 0.7827717124575296, -0.8086757549230774,
+  ];
+
+  const r = multiplyMatrices(oklabMatrix, LMSg);
+
   return {
     l: r[0],
     a: r[1],
@@ -109,7 +112,7 @@ function formatNumber(num: number, digits = 2): string {
   }
 }
 
-const rgb2oklch = (rgb: RGB): OklchColor => {
+const rgb2oklch = (rgb: RGBColor): OklchColor => {
   const rgbLinear = rgb2srgbLinear(rgb);
   const xyz = rgbLinear2xyz(rgbLinear);
   const oklab = xyz2oklab(xyz);
@@ -120,9 +123,9 @@ const rgb2oklch = (rgb: RGB): OklchColor => {
 
 // RGB is Normalized Format (0-1) using in Figma and particularly in graphics programming.
 
-export function colorToOKLCH(color: RGB, opacity: number = 1): string {
+export function colorToOKLCH(color: RGBColor, opacity: number = 1): string {
   // Clamp RGB values
-  const clampedColor: RGB = {
+  const clampedColor: RGBColor = {
     r: Math.min(Math.max(color.r, 0), 1),
     g: Math.min(Math.max(color.g, 0), 1),
     b: Math.min(Math.max(color.b, 0), 1),

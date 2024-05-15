@@ -1,18 +1,18 @@
-import { colorToOKLCH, RGB } from '../oklch';
+import { colorToOKLCH, RGBColor } from '../oklch';
 
 describe('convert RGB to OKLCH', () => {
   it('convert red color', () => {
-    const rgb: RGB = { r: 255 / 255, g: 0, b: 0 }; // Red color
+    const rgb: RGBColor = { r: 255 / 255, g: 0, b: 0 }; // Red color
     const result = colorToOKLCH(rgb, undefined);
     expect(result).toBe('oklch(62.8%, 0.258, 29.2)');
   });
   it('convert black color', () => {
-    const rgb = { r: 0, g: 0, b: 0 };
+    const rgb: RGBColor = { r: 0, g: 0, b: 0 }; // Black color
     const result = colorToOKLCH(rgb, undefined);
     expect(result).toBe('oklch(0%, 0, 0)');
   });
   it('convert black with opacity 50%', () => {
-    const rgb = { r: 0, g: 0, b: 0 };
+    const rgb: RGBColor = { r: 0, g: 0, b: 0 }; // Black color
     const result = colorToOKLCH(rgb, 0.5);
     expect(result).toBe('oklch(0%, 0, 0 / 50%)');
   });
