@@ -34,4 +34,21 @@ describe('convert RGB to OKLCH', () => {
     const result = colorToOKLCH(rgb, opacity);
     expect(result).toBe('oklch(69.9%, 0.110, 79.9)');
   });
+  it('clamps RGB values to 0-1 range', () => {
+    const rgb = { r: -0.5, g: 1.2, b: 0.8 };
+    const result = colorToOKLCH(rgb);
+    expect(result).toBe('oklch(89.0%, 0.174, 171.3)'); // The result you expect after clamping
+  });
+
+  it('clamps opacity value less than 0 range', () => {
+    const rgb = { r: 0.5, g: 0.5, b: 0.5 };
+    const result = colorToOKLCH(rgb, -0.5);
+    expect(result).toBe('oklch(59.8%, 0, 189.5 / 0%)'); // The result you expect after clamping
+  });
+
+  it('clamps opacity value more than 1 range', () => {
+    const rgb = { r: 0.5, g: 0.5, b: 0.5 };
+    const result = colorToOKLCH(rgb, 1.2);
+    expect(result).toBe('oklch(59.8%, 0, 189.5)'); // The result you expect after clamping
+  });
 });

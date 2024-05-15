@@ -119,11 +119,22 @@ const rgb2oklch = (rgb: RGB): OklchColor => {
 // RGB is Normalized Format (0-1) using in Figma and particularly in graphics programming.
 
 export function colorToOKLCH(color: RGB, opacity: number = 1): string {
-  let color255 = {
-    r: color.r * 255,
-    g: color.g * 255,
-    b: color.b * 255,
+  // Clamp RGB values
+  const clampedColor: RGB = {
+    r: Math.min(Math.max(color.r, 0), 1),
+    g: Math.min(Math.max(color.g, 0), 1),
+    b: Math.min(Math.max(color.b, 0), 1),
   };
+
+  // Clamp opacity value
+  const clampedOpacity = Math.min(Math.max(opacity, 0), 1);
+
+  let color255 = {
+    r: clampedColor.r * 255,
+    g: clampedColor.g * 255,
+    b: clampedColor.b * 255,
+  };
+
   let oklchColor = rgb2oklch({ r: color255.r, g: color255.g, b: color255.b });
 
   if (oklchColor) {
@@ -135,10 +146,10 @@ export function colorToOKLCH(color: RGB, opacity: number = 1): string {
       chue = formatNumber(oklchColor.h, 1);
     }
 
-    if (opacity === undefined || opacity === 1) {
+    if (clampedOpacity === undefined || clampedOpacity === 1) {
       return `oklch(${cl}%, ${cc}, ${chue})`;
     } else {
-      return `oklch(${cl}%, ${cc}, ${chue} / ${opacity * 100}%)`;
+      return `oklch(${cl}%, ${cc}, ${chue} / ${clampedOpacity * 100}%)`;
     }
   } else {
     return 'oklch(0%, 0, 0)';
