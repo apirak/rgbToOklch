@@ -86,9 +86,11 @@ export function oklab2oklch(oklab: OklabColor): OklchColor {
   const { l, a, b } = oklab;
   const c = Math.sqrt(a ** 2 + b ** 2); // Chroma
   let h = Math.atan2(b, a) * (180 / Math.PI); // Hue in degrees
-  if (h < 0) {
-    h += 360;
-  } // Normalize hue to be within 0-360 degrees
+
+  if (!Number.isFinite(h)) {
+    throw new Error('Invalid hue value');
+  }
+  h = (h + 360) % 360; // Normalize hue to be within 0-360 degrees
 
   return { l, c, h };
 }
